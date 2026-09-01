@@ -1,0 +1,44 @@
+# HRL using simple HAM and MAXQ concepts
+
+import random
+
+# States
+states = ["start", "kitchen", "room", "goal"]
+
+# HAM: Hierarchical Abstract Machine
+def HAM():
+    state = "start"
+
+    while state != "goal":
+        if state == "start":
+            print("HAM: Move to kitchen")
+            state = "kitchen"
+
+        elif state == "kitchen":
+            print("HAM: Pick up object")
+            state = "room"
+
+        elif state == "room":
+            print("HAM: Move to goal")
+            state = "goal"
+
+    print("HAM Task Completed")
+
+
+# MAXQ: Hierarchical decomposition
+def MAXQ():
+    print("\nMAXQ:")
+    print("Task: Clean House")
+
+    print("Subtask 1: Go to kitchen")
+    print("Subtask 2: Clean kitchen")
+
+    print("Subtask 3: Go to room")
+    print("Subtask 4: Clean room")
+
+    print("Subtask 5: Return home")
+    print("MAXQ Task Completed")
+
+
+HAM()
+MAXQ()
