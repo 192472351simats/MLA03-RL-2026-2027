@@ -1,0 +1,30 @@
+import random
+
+temperature = 25
+
+actions = [-2, -1, 0, 1, 2]
+
+total_reward = 0
+
+for episode in range(20):
+
+    action = random.choice(actions)
+
+    temperature = temperature + action
+
+    # Desired temperature = 24
+    comfort = abs(temperature - 24)
+
+    energy = abs(action)
+
+    reward = -comfort - energy
+
+    total_reward += reward
+
+    print(
+        "Temperature:", temperature,
+        "Action:", action,
+        "Reward:", reward
+    )
+
+print("\nTotal Reward:", total_reward)
