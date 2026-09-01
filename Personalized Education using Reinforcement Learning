@@ -1,0 +1,39 @@
+import random
+
+students = ["Student 1", "Student 2", "Student 3"]
+
+topics = [
+    "Easy Topic",
+    "Medium Topic",
+    "Hard Topic"
+]
+
+for student in students:
+
+    score = 50
+
+    print("\n", student)
+
+    for lesson in range(5):
+
+        topic = random.choice(topics)
+
+        if topic == "Easy Topic":
+            reward = 5
+            score += 5
+
+        elif topic == "Medium Topic":
+            reward = 10
+            score += 10
+
+        else:
+            reward = -2
+            score -= 2
+
+        print(
+            "Lesson:", lesson + 1,
+            "Topic:", topic,
+            "Reward:", reward
+        )
+
+    print("Final Learning Score:", score)
