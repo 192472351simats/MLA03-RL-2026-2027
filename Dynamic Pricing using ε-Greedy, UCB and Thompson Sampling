@@ -1,0 +1,107 @@
+import random
+import math
+
+prices = [50, 60, 70, 80]
+demand = [0.9, 0.7, 0.5, 0.3]
+
+trials = 500
+
+
+def epsilon_greedy():
+    count = [0] * 4
+    revenue = [0] * 4
+    total = 0
+
+    for i in range(trials):
+        if random.random() < 0.1:
+            price = random.randint(0, 3)
+        else:
+            avg = []
+            for j in range(4):
+                if count[j] == 0:
+                    avg.append(0)
+                else:
+                    avg.append(revenue[j] / count[j])
+
+            price = avg.index(max(avg))
+
+        sale = random.random() < demand[price]
+        r = prices[price] if sale else 0
+
+        count[price] += 1
+        revenue[price] += r
+        total += r
+
+    return total
+
+
+def ucb():
+    count = [0] * 4
+    revenue = [0] * 4
+    total = 0
+
+    for i in range(trials):
+
+        if i < 4:
+            price = i
+        else:
+            values = []
+
+            for j in range(4):
+                avg = revenue[j] / count[j]
+                confidence = math.sqrt(2 * math.log(i + 1) / count[j])
+                values.append(avg + confidence)
+
+            price = values.index(max(values))
+
+        sale = random.random() < demand[price]
+        r = prices[price] if sale else 0
+
+        count[price] += 1
+        revenue[price] += r
+        total += r
+
+    return total
+
+
+def thompson():
+    success = [1] * 4
+    failure = [1] * 4
+    total = 0
+
+    for i in range(trials):
+
+        samples = []
+
+        for j in range(4):
+            samples.append(
+                random.betavariate(success[j], failure[j])
+            )
+
+        price = samples.index(max(samples))
+
+        sale = random.random() < demand[price]
+
+        if sale:
+            success[price] += 1
+            total += prices[price]
+        else:
+            failure[price] += 1
+
+    return total
+
+
+e = epsilon_greedy()
+u = ucb()
+t = thompson()
+
+print("Epsilon-Greedy Revenue:", e)
+print("UCB Revenue:", u)
+print("Thompson Sampling Revenue:", t)
+
+if e > u and e > t:
+    print("Best Strategy: Epsilon-Greedy")
+elif u > e and u > t:
+    print("Best Strategy: UCB")
+else:
+    print("Best Strategy: Thompson Sampling")
