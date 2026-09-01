@@ -1,0 +1,32 @@
+import random
+
+states = ["Left", "Right", "Obstacle"]
+
+actions = ["Move Left", "Move Right", "Stop"]
+
+position = 0
+
+for step in range(10):
+
+    observation = random.choice(states)
+
+    print("\nObservation:", observation)
+
+    if observation == "Left":
+        action = "Move Left"
+
+    elif observation == "Right":
+        action = "Move Right"
+
+    else:
+        action = "Stop"
+
+    print("Action:", action)
+
+    if action == "Move Right":
+        position += 1
+
+    elif action == "Move Left":
+        position -= 1
+
+print("\nFinal Position:", position)
