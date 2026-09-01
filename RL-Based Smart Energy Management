@@ -1,0 +1,25 @@
+import random
+
+energy = 50
+
+for hour in range(1, 11):
+
+    action = random.choice(["Save Energy", "Normal Usage"])
+
+    if action == "Save Energy":
+        energy -= 3
+        reward = 5
+    else:
+        energy -= 8
+        reward = 2
+
+    if energy < 0:
+        energy = 0
+
+    print("Hour:", hour)
+    print("Action:", action)
+    print("Energy Remaining:", energy)
+    print("Reward:", reward)
+    print()
+
+print("Final Energy:", energy)
