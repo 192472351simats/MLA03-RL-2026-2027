@@ -1,0 +1,33 @@
+import random
+
+prices = [100, 102, 101, 105, 107, 104, 108, 110]
+
+actions = ["Buy", "Sell", "Hold"]
+
+total_profit = 0
+
+for episode in range(10):
+
+    profit = 0
+
+    for i in range(len(prices) - 1):
+
+        action = random.choice(actions)
+
+        if action == "Buy":
+            reward = prices[i + 1] - prices[i]
+
+        elif action == "Sell":
+            reward = prices[i] - prices[i + 1]
+
+        else:
+            reward = 0
+
+        profit += reward
+
+    total_profit += profit
+
+    print("Episode:", episode + 1)
+    print("Profit:", profit)
+
+print("\nTotal Profit:", total_profit)
