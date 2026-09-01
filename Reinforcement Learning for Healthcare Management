@@ -1,0 +1,32 @@
+import random
+
+patients = 10
+
+waiting = 0
+total_reward = 0
+
+for i in range(patients):
+
+    action = random.choice([
+        "Immediate Treatment",
+        "Wait"
+    ])
+
+    if action == "Immediate Treatment":
+        reward = 10
+        waiting = max(0, waiting - 1)
+
+    else:
+        reward = -5
+        waiting += 1
+
+    total_reward += reward
+
+    print(
+        "Patient:", i + 1,
+        "Action:", action,
+        "Reward:", reward
+    )
+
+print("\nTotal Reward:", total_reward)
+print("Patients Waiting:", waiting)
