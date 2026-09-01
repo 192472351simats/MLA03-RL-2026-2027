@@ -1,0 +1,27 @@
+import random
+
+# Simple Meta-RL simulation
+tasks = ["Task A", "Task B", "Task C"]
+
+for task in tasks:
+
+    print("\nLearning", task)
+
+    reward = 0
+
+    for episode in range(1, 6):
+
+        action = random.choice(["Action 1", "Action 2"])
+
+        if action == "Action 1":
+            r = random.randint(5, 10)
+        else:
+            r = random.randint(1, 5)
+
+        reward += r
+
+        print("Episode:", episode,
+              "Action:", action,
+              "Reward:", r)
+
+    print("Total Reward:", reward)
