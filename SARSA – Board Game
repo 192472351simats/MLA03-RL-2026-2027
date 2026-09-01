@@ -1,0 +1,47 @@
+import random
+
+states = 9
+actions = 4
+
+Q = [[0 for j in range(actions)] for i in range(states)]
+
+alpha = 0.1
+gamma = 0.9
+epsilon = 0.1
+
+for episode in range(1000):
+
+    state = random.randint(0, states - 1)
+
+    if random.random() < epsilon:
+        action = random.randint(0, actions - 1)
+    else:
+        action = Q[state].index(max(Q[state]))
+
+    for step in range(20):
+
+        next_state = random.randint(0, states - 1)
+
+        reward = random.choice([-1, 0, 1])
+
+        if random.random() < epsilon:
+            next_action = random.randint(0, actions - 1)
+        else:
+            next_action = Q[next_state].index(
+                max(Q[next_state])
+            )
+
+        Q[state][action] = Q[state][action] + alpha * (
+            reward +
+            gamma * Q[next_state][next_action] -
+            Q[state][action]
+        )
+
+        state = next_state
+        action = next_action
+
+print("SARSA Training Completed")
+print("Learned Q-Table:")
+
+for row in Q:
+    print(row)
