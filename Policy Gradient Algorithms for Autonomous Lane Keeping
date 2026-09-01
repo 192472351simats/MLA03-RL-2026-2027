@@ -1,0 +1,58 @@
+import numpy as np
+import random
+
+# Actions
+actions = [-1, 0, 1]
+
+# Policy probabilities
+policy = np.array([0.3, 0.4, 0.3])
+
+learning_rate = 0.1
+
+for episode in range(100):
+
+    position = 0
+    total_reward = 0
+
+    for step in range(20):
+
+        # Select action using policy
+        action_index = np.random.choice(
+            3,
+            p=policy
+        )
+
+        action = actions[action_index]
+
+        # Change vehicle position
+        position += action
+
+        # Reward for staying near center
+        if position == 0:
+            reward = 10
+        elif abs(position) == 1:
+            reward = 5
+        else:
+            reward = -10
+
+        total_reward += reward
+
+        # Policy update
+        if reward > 0:
+            policy[action_index] += learning_rate * 0.01
+        else:
+            policy[action_index] -= learning_rate * 0.01
+
+        # Keep probabilities valid
+        policy = np.maximum(policy, 0.01)
+        policy = policy / np.sum(policy)
+
+    if episode % 10 == 0:
+        print(
+            "Episode:", episode,
+            "Reward:", total_reward,
+            "Policy:", policy
+        )
+
+print("\nTraining Completed")
+print("Final Policy:", policy)
