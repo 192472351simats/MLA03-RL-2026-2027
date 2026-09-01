@@ -1,0 +1,135 @@
+import random
+
+# Elevator floors
+floors = 5
+
+# Passenger requests
+requests = [0, 1, 2, 3, 4]
+
+# Actions: move up, move down, stay
+actions = [-1, 1, 0]
+
+# Actor policy probabilities
+policy = [0.33, 0.34, 0.33]
+
+# Critic value
+value = 0
+
+learning_rate = 0.1
+
+# ---------------- A2C ----------------
+
+print("A2C TRAINING")
+
+for episode in range(20):
+
+    elevator = random.randint(0, floors - 1)
+    passenger = random.choice(requests)
+
+    total_reward = 0
+
+    for step in range(10):
+
+        # Actor selects action
+        action_index = random.choices(
+            range(3),
+            weights=policy
+        )[0]
+
+        action = actions[action_index]
+
+        new_floor = elevator + action
+
+        # Keep elevator inside building
+        new_floor = max(0, min(floors - 1, new_floor))
+
+        # Reward
+        distance = abs(new_floor - passenger)
+
+        reward = -distance
+
+        # Bonus when passenger is reached
+        if new_floor == passenger:
+            reward += 10
+
+        total_reward += reward
+
+        # Advantage
+        advantage = reward - value
+
+        # Actor update
+        policy[action_index] += learning_rate * advantage
+
+        # Keep probabilities positive
+        policy = [max(0.01, p) for p in policy]
+
+        # Normalize policy
+        total = sum(policy)
+        policy = [p / total for p in policy]
+
+        # Critic update
+        value = value + learning_rate * advantage
+
+        elevator = new_floor
+
+        if elevator == passenger:
+            break
+
+    print(
+        "Episode:", episode + 1,
+        "Reward:", total_reward
+    )
+
+print("\nA2C Final Policy:", policy)
+
+
+# ---------------- A3C ----------------
+
+print("\nA3C TRAINING")
+
+workers = 3
+
+for worker in range(workers):
+
+    elevator = random.randint(0, floors - 1)
+    passenger = random.choice(requests)
+
+    total_reward = 0
+
+    for step in range(10):
+
+        action_index = random.choices(
+            range(3),
+            weights=policy
+        )[0]
+
+        action = actions[action_index]
+
+        new_floor = elevator + action
+
+        new_floor = max(
+            0,
+            min(floors - 1, new_floor)
+        )
+
+        distance = abs(new_floor - passenger)
+
+        reward = -distance
+
+        if new_floor == passenger:
+            reward += 10
+
+        total_reward += reward
+
+        elevator = new_floor
+
+        if elevator == passenger:
+            break
+
+    print(
+        "Worker:", worker + 1,
+        "Reward:", total_reward
+    )
+
+print("\nA3C Training Completed")
+print("Final Policy:", policy)
