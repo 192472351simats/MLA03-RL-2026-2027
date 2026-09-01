@@ -1,0 +1,27 @@
+import random
+
+robots = ["Robot 1", "Robot 2", "Robot 3"]
+
+tasks = ["Task A", "Task B", "Task C"]
+
+total_reward = 0
+
+for i in range(3):
+
+    robot = robots[i]
+    task = tasks[i]
+
+    action = random.choice(["Move", "Wait"])
+
+    if action == "Move":
+        reward = 10
+    else:
+        reward = -1
+
+    total_reward += reward
+
+    print(robot, "->", task)
+    print("Action:", action)
+    print("Reward:", reward)
+
+print("\nTotal Cooperative Reward =", total_reward)
