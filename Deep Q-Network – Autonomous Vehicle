@@ -1,0 +1,56 @@
+import numpy as np
+import random
+import tensorflow as tf
+from tensorflow.keras import Sequential
+from tensorflow.keras.layers import Dense
+
+states = 4
+actions = 2
+
+model = Sequential([
+    Dense(24, activation="relu", input_shape=(states,)),
+    Dense(24, activation="relu"),
+    Dense(actions, activation="linear")
+])
+
+model.compile(
+    optimizer="adam",
+    loss="mse"
+)
+
+for episode in range(100):
+
+    state = np.random.rand(states)
+
+    for step in range(10):
+
+        if random.random() < 0.1:
+            action = random.randint(0, actions - 1)
+        else:
+            q_values = model.predict(
+                state.reshape(1, -1),
+                verbose=0
+            )
+            action = np.argmax(q_values)
+
+        next_state = np.random.rand(states)
+
+        reward = random.choice([1, -1])
+
+        target = model.predict(
+            state.reshape(1, -1),
+            verbose=0
+        )
+
+        target[0][action] = reward
+
+        model.fit(
+            state.reshape(1, -1),
+            target,
+            epochs=1,
+            verbose=0
+        )
+
+        state = next_state
+
+print("DQN Training Completed")
