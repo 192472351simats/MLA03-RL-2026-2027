@@ -1,0 +1,32 @@
+def collect_resources():
+    print("Collecting resources")
+    return 10
+
+
+def build_units():
+    print("Building units")
+    return 10
+
+
+def attack():
+    print("Attacking opponent")
+    return 20
+
+
+def MAXQ():
+
+    print("Main Task Started")
+
+    reward = 0
+
+    reward += collect_resources()
+    reward += build_units()
+    reward += attack()
+
+    print("Total Reward:", reward)
+
+    if reward >= 40:
+        print("Overall Task Completed")
+
+
+MAXQ()
