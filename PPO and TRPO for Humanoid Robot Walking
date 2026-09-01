@@ -1,0 +1,32 @@
+import numpy as np
+import gymnasium as gym
+from stable_baselines3 import PPO
+
+# Simple environment
+env = gym.make("CartPole-v1")
+
+# Create PPO model
+model = PPO("MlpPolicy", env, verbose=1)
+
+# Train the robot
+model.learn(total_timesteps=10000)
+
+# Test the trained model
+obs, info = env.reset()
+
+total_reward = 0
+
+for i in range(1000):
+    action, _ = model.predict(obs)
+
+    obs, reward, terminated, truncated, info = env.step(action)
+
+    total_reward += reward
+
+    if terminated or truncated:
+        obs, info = env.reset()
+
+print("PPO Training Completed")
+print("Total Reward:", total_reward)
+
+env.close()
