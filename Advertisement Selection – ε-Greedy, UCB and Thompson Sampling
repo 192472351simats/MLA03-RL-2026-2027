@@ -1,0 +1,125 @@
+import random
+import math
+
+ads = 3
+
+# True click probabilities
+probability = [0.2, 0.5, 0.8]
+
+trials = 1000
+
+
+# ---------------- EPSILON GREEDY ----------------
+
+def epsilon_greedy():
+
+    count = [0] * ads
+    reward = [0] * ads
+
+    for i in range(trials):
+
+        if random.random() < 0.1:
+            ad = random.randint(0, ads - 1)
+        else:
+            ad = reward.index(max(reward))
+
+        click = random.random() < probability[ad]
+
+        count[ad] += 1
+
+        if click:
+            reward[ad] += 1
+
+    return sum(reward) / trials
+
+
+# ---------------- UCB ----------------
+
+def ucb():
+
+    count = [0] * ads
+    reward = [0] * ads
+
+    total_reward = 0
+
+    for i in range(trials):
+
+        if i < ads:
+            ad = i
+        else:
+            values = []
+
+            for j in range(ads):
+
+                average = reward[j] / count[j]
+
+                confidence = math.sqrt(
+                    2 * math.log(i + 1) / count[j]
+                )
+
+                values.append(average + confidence)
+
+            ad = values.index(max(values))
+
+        click = random.random() < probability[ad]
+
+        count[ad] += 1
+
+        if click:
+            reward[ad] += 1
+            total_reward += 1
+
+    return total_reward / trials
+
+
+# ---------------- THOMPSON SAMPLING ----------------
+
+def thompson():
+
+    success = [1] * ads
+    failure = [1] * ads
+
+    total_reward = 0
+
+    for i in range(trials):
+
+        samples = []
+
+        for j in range(ads):
+
+            sample = random.betavariate(
+                success[j],
+                failure[j]
+            )
+
+            samples.append(sample)
+
+        ad = samples.index(max(samples))
+
+        click = random.random() < probability[ad]
+
+        if click:
+            success[ad] += 1
+            total_reward += 1
+        else:
+            failure[ad] += 1
+
+    return total_reward / trials
+
+
+# Results
+
+e = epsilon_greedy()
+u = ucb()
+t = thompson()
+
+print("Epsilon-Greedy CTR =", e)
+print("UCB CTR =", u)
+print("Thompson Sampling CTR =", t)
+
+if e > u and e > t:
+    print("Best Algorithm: Epsilon-Greedy")
+elif u > e and u > t:
+    print("Best Algorithm: UCB")
+else:
+    print("Best Algorithm: Thompson Sampling")
