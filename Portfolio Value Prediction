@@ -1,0 +1,29 @@
+import numpy as np
+
+# Historical returns
+stocks = {
+    "Stock A": [0.05, 0.03, -0.02, 0.04],
+    "Stock B": [0.02, 0.06, 0.01, 0.03],
+    "Stock C": [0.08, -0.01, 0.05, 0.02]
+}
+
+investments = {
+    "Portfolio 1": [0.5, 0.3, 0.2],
+    "Portfolio 2": [0.2, 0.5, 0.3],
+    "Portfolio 3": [0.3, 0.2, 0.5]
+}
+
+returns = np.array(list(stocks.values()))
+
+for name, weights in investments.items():
+
+    weights = np.array(weights)
+
+    portfolio_returns = weights @ returns
+
+    average = np.mean(portfolio_returns)
+
+    print(name)
+    print("Average Return:", average)
+    print("Predicted Value:", 10000 * (1 + average))
+    print()
