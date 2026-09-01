@@ -1,0 +1,47 @@
+import random
+
+states = ["Low", "High"]
+
+actions = ["Short", "Long"]
+
+policy = {
+    "Low": "Short",
+    "High": "Long"
+}
+
+value = {
+    "Low": 0,
+    "High": 0
+}
+
+for iteration in range(10):
+
+    # Policy evaluation
+    for state in states:
+
+        action = policy[state]
+
+        if state == "Low" and action == "Short":
+            value[state] = 10
+
+        elif state == "High" and action == "Long":
+            value[state] = 20
+
+        else:
+            value[state] = 5
+
+    # Policy improvement
+    for state in states:
+
+        if state == "Low":
+            policy[state] = "Short"
+        else:
+            policy[state] = "Long"
+
+print("Optimal Traffic Light Policy:")
+
+for state in states:
+    print(state, "Traffic ->", policy[state])
+
+print("\nState Values:")
+print(value)
